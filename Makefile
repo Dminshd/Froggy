@@ -1,8 +1,19 @@
+GLFW_DIR = Deps/GLFW/
+GLFW_LIB = $(GLFW_DIR)Build/src/libglfw3.a
+
 CC = clang
-TARGET = Build/
-PROJECT = Froggy
 
-SRC = $(wildcard Src/*.c)
+CFLAGS = -I$(GLFW_DIR)include
+LDFLAGS = -lglfw -lm -lvulkan
 
-DEBUG :
-	$(CC) -o $(TARGET)$(PROJECT) $(SRC)
+OBJ = Build/Objs/
+SRC = $(wildcard Src/*.c) $(wildcard Src/**/*.c)
+
+debug :
+	$(CC) $(CFLAGS) -o Build/froggy $(SRC) $(LDFLAGS)
+
+glfw :
+	cmake -S Deps/GLFW -B Deps/GLFW/Build && cd Deps/GLFW/Build && make
+
+clean : 
+	rm -rf Build/
